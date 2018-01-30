@@ -1,5 +1,8 @@
 #include "plot.h"
 
+/*Costruttore del plot
+**Inizializza sfondo, assi e dimensioni del Plot
+*/
 Plot::Plot(QFrame *parent): QwtPlot(parent)
 {
     setCanvasBackground(Qt::white);
@@ -17,24 +20,36 @@ Plot::Plot(QFrame *parent): QwtPlot(parent)
     resize(700,450);
 
 }
+
+/*Distruttore*/
 Plot::~Plot()
 {
     delete this;
 }
 
+/*Aggiunge un punto(marker) al grafico
+**Il marker è caratterizzato da delle coordinate, un simbolo e una label
+*/
 void Plot::addPoint(const QPair<const int,const int> point)
 {
-    QwtSymbol *sym=new QwtSymbol(QwtSymbol::Diamond,QBrush(Qt::red),QPen(Qt::red),QSize(5,5));
     xCoords.push_back(point.first);
     yCoords.push_back(point.second);
     QwtPlotMarker *mark=new QwtPlotMarker;
+    QwtSymbol *sym=new QwtSymbol(QwtSymbol::Ellipse,QBrush(Qt::red),QPen(Qt::red),QSize(7,7));
     mark->setSymbol(sym);
     mark->setValue(point.first,point.second);
+    QwtText label("("+QString::number(point.first)+","+QString::number(point.second)+")");
+    label.setFont(QFont("MS Reference Sans Serif",6));
+    mark->setLabel(label);
+    mark->setLabelAlignment(Qt::AlignTop);
     mark->attach(this);
     marks.push_back(mark);
     replot();
 }
 
+/*Elimino i marker dal grafico.
+**Ripulisco i vettori contenenti i punti inseriti
+*/
 void Plot::deletePoints()
 {
     for(unsigned int i=0;i<marks.size();i++)
@@ -48,13 +63,13 @@ void Plot::deletePoints()
 
 }
 
+/*Individua i punti necessari per disegnare il grafico*/
 QPair<std::vector<double>,std::vector<double>> Plot::findNeedPoint(std::vector<float> coeff,int degree)
 {
     QPair<std::vector<double>,std::vector<double>> points;
     switch(degree)
     {
         case 1:
-
             //Per la retta mi bastano 2 punti
             points.first.push_back(1.0);
             points.second.push_back(1.0*coeff.at(1)+coeff.at(0));
@@ -79,4 +94,44 @@ QPair<std::vector<double>,std::vector<double>> Plot::findNeedPoint(std::vector<f
     }
 
     return points;
+}
+
+void Plot::setDegree(int degree)
+{
+    this->degree=degree;
+}
+
+int Plot::getDegree()
+{
+    return degree;
+}
+
+void Plot::setXCoord(float x)
+{
+    xCoords.push_back(x);
+}
+
+std::vector<float> Plot::getXCoords()
+{
+    return xCoords;
+}
+
+void Plot::setYCoord(float y)
+{
+    yCoords.push_back(y);
+}
+
+std::vector<float> Plot::getYCoords()
+{
+    return yCoords;
+}
+
+void Plot::setMark(QwtPlotMarker* mark)
+{
+    marks.push_back(mark);
+}
+
+std::vector<QwtPlotMarker*> Plot::getMarks()
+{
+    return marks;
 }
