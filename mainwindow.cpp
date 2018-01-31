@@ -1,12 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <qwt_plot.h>
-#include <qwt_legend.h>
 
-/*
- * Costruttore della mainWindow
- * crea il plot all'interno del framePlot
- */
+
+/** \~Italian
+* @brief Costruttore della mainWindow. Crea il plot all'interno del framePlot
+* @param[QWidget *] parent
+*/
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -15,18 +14,18 @@ MainWindow::MainWindow(QWidget *parent) :
     plot=new Plot(ui->framePlot);
 }
 
-/*
- * Distruttore
- */
+/** \~Italian
+* @brief Distruttore. Distrugge anche il plot
+*/
 MainWindow::~MainWindow()
 {
+    plot->~Plot();
     delete ui;
 }
 
-/*
- * Slot eseguito quando viene aggiunto un nuovo punto
- * Reinizializzazione e aggiornamento UI
- */
+/** \~Italian
+* @brief Slot eseguito quando viene aggiunto un nuovo punto. Reinizializzazione e aggiornamento UI
+*/
 void MainWindow::on_pushButton_clicked()
 {
     QPair<int,int> point;
@@ -46,20 +45,13 @@ void MainWindow::on_pushButton_clicked()
     ui->cleanButton->setEnabled(true);
 }
 
-void MainWindow::drawPlot(const QPair<std::vector<double>,std::vector<double>> points)
-{
-    if(regressionLine->isVisible())
-        regressionLine->detach();
 
-    regressionLine->setPen(QPen(Qt::blue,2.0));
-    regressionLine->setSamples(points.first.data(),points.second.data(),points.first.size());
-    regressionLine->attach(plot);
-    plot->replot();
-}
 
-/*
- * Scrive l'equazione della curva ottenuta nel groupBox
- */
+/** \~Italian
+* @brief Costruisce l'equazione e la mostra in UI
+* @param[vector<float>]coeffRegressionLine: vettore contenente i coefficienti del polinomio
+* @param[int] degree: grado del polinomio
+*/
 void MainWindow::writeEquation(vector<float>coeffRegressionLine,int degree)
 {
     float coeffRegressionLineTrunc;
@@ -81,32 +73,30 @@ void MainWindow::writeEquation(vector<float>coeffRegressionLine,int degree)
         ui->equationInsertLabel->setText(ui->equationInsertLabel->text().append(QString::number(coeffRegressionLineTrunc)));
 }
 
-/*
- * Slot utilizzato per ripulire l'ambiente
- * Reinizializza il plot e UI
- */
+/** \~Italian
+* @brief Slot utilizzato per ripulire l'ambiente. Reinizializza il plot e UI
+*/
 void MainWindow::on_cleanButton_clicked()
 {
+    plot->clearPlot();
     plot->setDegree(1);
     ui->degreeLabel->setText(QString("Grado: "));
     ui->degreeSpinBox->setVisible(true);
     ui->equationInsertLabel->setText(QString(""));
-    plot->deletePoints();
-    regressionLine->detach();
     ui->computeButton->setEnabled(false);
     ui->cleanButton->setEnabled(false);
     plot->replot();
 }
 
-/*
- * Slot che esegue l'approssimazione ai minimi quadrati
- * Utilizza la libreria "LeastSquareRegressionLibrary"
- */
+
+/** \~Italian
+* @brief Slot che esegue l'approssimazione ai minimi quadrati. Utilizza la libreria "LeastSquareRegressionLibrary"
+*/
 void MainWindow::on_computeButton_clicked()
 {
     LeastSquareRegressionLibrary regressionLine;
-    std::vector<float> coeffRegressionLine=regressionLine.solveLinearSystem(plot->getXCoords(),plot->getYCoords(),plot->getDegree());
+    vector<float> coeffRegressionLine=regressionLine.solveLinearSystem(plot->getXCoords(),plot->getYCoords(),plot->getDegree());
     writeEquation(coeffRegressionLine,plot->getDegree());
-    QPair<std::vector<double>,std::vector<double>> points= plot->findNeedPoint(coeffRegressionLine,plot->getDegree());
-    drawPlot(points);
+    QPair<vector<double>,vector<double>> points= plot->findNeedPoint(coeffRegressionLine,plot->getDegree());
+    plot->draw(points);
 }

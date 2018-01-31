@@ -21,4 +21,4 @@ unix {
     INSTALLS += target
 }
 
-INCLUDEPATH += $$PWD/../../../../eigen-eigen-5a0156e40feb/eigen-eigen-5a0156e40feb
+INCLUDEPATH += $$PWD/../eigen-eigen-5a0156e40feb/eigen-eigen-5a0156e40feb

@@ -4,12 +4,7 @@
 #include <qwt_symbol.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_curve.h>
-#include <Eigen/LU>
-#include <Eigen/Dense>
-#include <iostream>
 
-using Eigen::MatrixXf;
-using Eigen::VectorXf;
 using namespace std;
 
 class Plot : public QwtPlot
@@ -18,27 +13,24 @@ class Plot : public QwtPlot
         Plot(QFrame *parent=0);
         ~Plot();
         void addPoint(const QPair<const int,const int> point);
-        void deletePoints();
-        QPair<std::vector<double>,std::vector<double>> findNeedPoint(std::vector<float> coeff,const int degree);
-        void drawPlot(QPair<std::vector<double>,std::vector<double>> points,const int degree);
-
-        /*
-         * Metodi set e get degli attributi privati
-         */
+        void clearPlot();
+        QPair<vector<double>,vector<double>> findNeedPoint(vector<float> coeff,const int degree);
+        void draw(const QPair<vector<double>,vector<double>> points);
         void setDegree(int degree);
         int getDegree();
         void setXCoord(float x);
-        std::vector<float> getXCoords();
+        vector<float> getXCoords();
         void setYCoord(float y);
-        std::vector<float> getYCoords();
+        vector<float> getYCoords();
         void setMark(QwtPlotMarker* mark);
-        std::vector<QwtPlotMarker*> getMarks();
+        vector<QwtPlotMarker*> getMarks();
 
     private:
+        QwtPlotCurve *regressionLine=new QwtPlotCurve(QString(""));
         int degree;
-        std::vector<float> xCoords;
-        std::vector<float> yCoords;
-        std::vector<QwtPlotMarker*> marks;//Vettore che conserva i marcatori aggiunti nel grafico
+        vector<float> xCoords;
+        vector<float> yCoords;
+        vector<QwtPlotMarker*> marks;//Vettore che conserva i marcatori presenti nel grafico
 };
 
 #endif // PLOT_H

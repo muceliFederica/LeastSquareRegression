@@ -10,9 +10,7 @@ std::vector<float> LeastSquareRegressionLibrary::solveLinearSystem(std::vector<f
 {
     MatrixXf vandermondeMatrix=createVandermondeMatrix(xCoords,degree);
     MatrixXf y=convertToMatrix(yCoords);
-
-    MatrixXf coeffRegressionLineM=(vandermondeMatrix.transpose() * vandermondeMatrix).ldlt().solve(vandermondeMatrix.transpose() *y);
-    vector<float> coeffRegressionLine=convertToVector(coeffRegressionLineM);
+    vector<float> coeffRegressionLine=convertToVector((vandermondeMatrix.transpose() * vandermondeMatrix).ldlt().solve(vandermondeMatrix.transpose() *y));
     return coeffRegressionLine;
 }
 

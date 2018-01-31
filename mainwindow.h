@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <plot.h>
-#include <iostream>
 #include <leastsquareregressionlibrary.h>
 
 namespace Ui {
@@ -16,7 +15,7 @@ class MainWindow : public QMainWindow
 
     public:
         explicit MainWindow(QWidget *parent = 0);
-        void drawPlot(const QPair<std::vector<double>,std::vector<double>> points);
+        void drawPlot(const QPair<vector<double>,vector<double>> points);
         ~MainWindow();
 
     private slots:
@@ -29,7 +28,6 @@ class MainWindow : public QMainWindow
     private:
         Ui::MainWindow *ui;
         Plot *plot;
-        QwtPlotCurve *regressionLine=new QwtPlotCurve(QString(""));
         void writeEquation(const vector<float>coeffRegressionLine,const int degree);
 };
 
