@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
 /** \~Italian
 * @brief Costruttore della mainWindow. Crea il plot all'interno del framePlot
 * @param[QWidget *] parent
@@ -59,18 +58,20 @@ void MainWindow::writeEquation(vector<float>coeffRegressionLine,int degree)
     for(int i=degree;i>0;i--)
     {
         //Tronco il float alla seconda cifra decimale
-        coeffRegressionLineTrunc=roundf(coeffRegressionLine.at(i)*100)/100;
+        coeffRegressionLineTrunc=roundf(coeffRegressionLine.at(i)*1000)/1000;
         if (coeffRegressionLineTrunc>0)
             ui->equationInsertLabel->setText(ui->equationInsertLabel->text().append("+"+QString::number(coeffRegressionLineTrunc)+"x^"+QString::number(i)));
         else if(coeffRegressionLineTrunc<0)
             ui->equationInsertLabel->setText(ui->equationInsertLabel->text().append(QString::number(coeffRegressionLineTrunc)+"x^"+QString::number(i)));
     }
 
-    coeffRegressionLineTrunc=roundf(coeffRegressionLine.at(0)*100)/100;
+    coeffRegressionLineTrunc=roundf(coeffRegressionLine.at(0)*1000)/1000;
     if(coeffRegressionLineTrunc>0)
         ui->equationInsertLabel->setText(ui->equationInsertLabel->text().append("+"+QString::number(coeffRegressionLineTrunc)));
     else if(coeffRegressionLineTrunc<0)
         ui->equationInsertLabel->setText(ui->equationInsertLabel->text().append(QString::number(coeffRegressionLineTrunc)));
+    else
+        ui->equationInsertLabel->setText(ui->equationInsertLabel->text().append("+0"));
 }
 
 /** \~Italian
