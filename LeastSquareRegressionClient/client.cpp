@@ -22,6 +22,7 @@ void Client::onConnected()
 void Client::onUnConnected()
 {
     qDebug()<<"Client Non Connesso...";
+    socket->deleteLater();
 }
 
 void Client::send(QString pointsString)
@@ -36,7 +37,9 @@ void Client::send(QString pointsString)
     socket->waitForReadyRead(); //Aspetto che la risposta del server
     data=socket->readLine();    //sia disponibile e la leggo
     socket->flush();
+
 }
+
 
 std::vector<float> Client::getCoeffRegression()
 {

@@ -109,6 +109,7 @@ void MainWindow::on_computeButton_clicked()
     {
         client.send(pointsString);
         coeffRegressionLine=client.getCoeffRegression();
+
     }
     else
     {

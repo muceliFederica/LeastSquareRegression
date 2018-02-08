@@ -20,7 +20,6 @@ class Client : public QObject
     public slots:
         void onUnConnected();
         void onConnected();
-
     private:
         QTcpSocket *socket; //socket utilizzato per la connessione
         QByteArray data; //array per scambiare messaggi con il server

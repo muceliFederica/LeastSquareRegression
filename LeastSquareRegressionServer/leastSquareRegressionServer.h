@@ -11,26 +11,29 @@
 #include <QTcpSocket>
 
 
+
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
 
-class Server : public QObject
+class leastSquareRegressionServer : public QObject
 {
     Q_OBJECT
    public:
-       explicit Server(QObject *parent = 0);
+       explicit leastSquareRegressionServer(QObject *parent = 0);
         vector<float> findXCoords(QByteArray mykeypass);
         vector<float> findYCoords(QByteArray mykeypass);
         int findDegree(QByteArray mykeypass);
+        void myRead(QTcpSocket* socket);
    signals:
 
 
    public slots:
        void newConnection();
-
+       void disconnected();
 
    private:
        QTcpServer *server;
+       bool connected=false;
 };
 
 #endif // SERVER_H

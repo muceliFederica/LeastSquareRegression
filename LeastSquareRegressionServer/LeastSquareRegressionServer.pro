@@ -15,10 +15,10 @@ TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    server.cpp
+    leastSquareRegressionServer.cpp
 
 HEADERS += \
-    server.h
+    leastSquareRegressionServer.h
 
 
 INSTALLS += target

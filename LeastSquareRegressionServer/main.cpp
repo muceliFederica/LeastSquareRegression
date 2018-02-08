@@ -1,13 +1,13 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QCommandLineParser>
 #include <QtCore/QCommandLineOption>
-#include "server.h"
+#include "leastSquareRegressionServer.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    Server server;
+    leastSquareRegressionServer server;
 
     return a.exec();
 }
