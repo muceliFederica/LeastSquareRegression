@@ -11,7 +11,7 @@ class Plot : public QwtPlot
 {
     public:
         Plot(QFrame *parent=0);
-        void addPoint(const QPair<const int,const int> point);
+        void addPoint(const QPair<const float,const float> point);
         void clearPlot();
         QPair<vector<double>,vector<double>> findNeedPoint(vector<float> coeff,const int degree);
         void draw(const QPair<vector<double>,vector<double>> points);

@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += core websockets
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,13 +17,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     plot.cpp \
-    client.cpp
+    client.cpp \
+    dialoginput.cpp \
+    databasemanager.cpp
 
 HEADERS  += mainwindow.h \
     plot.h \
-    client.h
+    client.h \
+    dialoginput.h \
+    databasemanager.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dialoginput.ui \
+    databasemanager.ui
 
 
 

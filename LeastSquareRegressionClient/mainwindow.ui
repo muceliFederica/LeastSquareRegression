@@ -304,7 +304,7 @@ font: 8pt &quot;MS Reference Sans Serif&quot;;</string>
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton">
+               <widget class="QPushButton" name="addPointPushButton">
                 <property name="styleSheet">
                  <string notr="true">background-color:rgb(214, 214, 214);
 font: 87 8pt &quot;Segoe UI Black&quot;;</string>
@@ -353,7 +353,6 @@ font: 87 8pt &quot;Segoe UI Black&quot;;</string>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <zorder>groupBox_2</zorder>
          </widget>
         </item>
        </layout>

@@ -1,13 +1,13 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include "client.h"
+#include "dialoginput.h"
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    MainWindow w;
-    w.showMaximized();
+    DialogInput dialogInput;
+    dialogInput.show();
     return a.exec();
 }

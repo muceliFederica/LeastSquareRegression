@@ -25,7 +25,7 @@ Plot::Plot(QFrame *parent): QwtPlot(parent)
 * @brief Aggiunge un punto(marker) al grafico
 * @param[QPair<const int,const int>] point: coppia che contiene le coordiante del nuovo punto
 */
-void Plot::addPoint(const QPair<const int,const int> point)
+void Plot::addPoint(const QPair<const float,const float> point)
 {
     xCoords.push_back(point.first);
     yCoords.push_back(point.second);
@@ -108,7 +108,6 @@ QPair<vector<double>,vector<double>> Plot::findNeedPoint(vector<float> coeff,int
             }
         break;
     }
-
     return points;
 }
 
@@ -120,6 +119,7 @@ void Plot::setDegree(int degree)
 {
     this->degree=degree;
 }
+
 /** \~Italian
 * @brief Restituisce il valore del grado
 * @return il grado

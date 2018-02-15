@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     plot=new Plot(ui->framePlot);
 }
 
+
+
 /** \~Italian
 * @brief Distruttore. Distrugge anche il plot
 */
@@ -21,29 +23,6 @@ MainWindow::~MainWindow()
     delete plot;
     delete ui;
 }
-
-/** \~Italian
-* @brief Slot eseguito quando viene aggiunto un nuovo punto. Reinizializzazione e aggiornamento UI
-*/
-void MainWindow::on_pushButton_clicked()
-{
-    QPair<int,int> point;
-    point.first=ui->xSpinBox->value();
-    point.second=ui->ySpinBox->value();
-    plot->addPoint(point);
-
-    ui->xSpinBox->setValue(0);
-    ui->ySpinBox->setValue(0);
-    ui->degreeLabel->setText(QString("Il grado selezionato è ").append(QString::number(ui->degreeSpinBox->value())));
-    if(!ui->degreeSpinBox->isHidden())
-    {
-        plot->setDegree(ui->degreeSpinBox->value());
-        ui->degreeSpinBox->hide();
-    }
-    ui->computeButton->setEnabled(true);
-    ui->cleanButton->setEnabled(true);
-}
-
 
 
 /** \~Italian
@@ -105,18 +84,79 @@ void MainWindow::on_computeButton_clicked()
     {
         pointsString.append(QString("?").append(QString::number(plot->getYCoords().at(i))));
     }
-    if(client.isConnected())
+    //Controlla se l'utente vuole che la computazione sia eseguita nel server oppure no
+    if(getType()==2)
     {
-        client.send(pointsString);
-        coeffRegressionLine=client.getCoeffRegression();
+        if(client.isConnected())
+        {
+            client.send(pointsString);
+            coeffRegressionLine=client.getCoeffRegression();
+            writeEquation(coeffRegressionLine,plot->getDegree());
+            QPair<vector<double>,vector<double>> points= plot->findNeedPoint(coeffRegressionLine,plot->getDegree());
+            plot->draw(points);
 
+        }
+        else
+        {
+            message.setWindowTitle("Errore");
+            message.setText("ATTENZIONE: Il client non è connesso.");
+            message.show();
+            this->close();
+
+        }
     }
     else
     {
         LeastSquareRegressionLibrary regressionLine;
         coeffRegressionLine=regressionLine.solveLinearSystem(plot->getXCoords(),plot->getYCoords(),plot->getDegree());
+        writeEquation(coeffRegressionLine,plot->getDegree());
+        QPair<vector<double>,vector<double>> points= plot->findNeedPoint(coeffRegressionLine,plot->getDegree());
+        plot->draw(points);
     }
-    writeEquation(coeffRegressionLine,plot->getDegree());
-    QPair<vector<double>,vector<double>> points= plot->findNeedPoint(coeffRegressionLine,plot->getDegree());
-    plot->draw(points);
+
+
 }
+
+/** \~Italian
+* @brief Slot eseguito quando viene aggiunto un nuovo punto. Reinizializzazione e aggiornamento UI
+*/
+void MainWindow::on_addPointPushButton_clicked()
+{
+    QPair<int,int> point;
+    point.first=ui->xSpinBox->value();
+    point.second=ui->ySpinBox->value();
+    plot->addPoint(point);
+
+    ui->xSpinBox->setValue(0);
+    ui->ySpinBox->setValue(0);
+    ui->degreeLabel->setText(QString("Il grado selezionato è ").append(QString::number(ui->degreeSpinBox->value())));
+    if(!ui->degreeSpinBox->isHidden())
+    {
+        plot->setDegree(ui->degreeSpinBox->value());
+        ui->degreeSpinBox->hide();
+    }
+    ui->computeButton->setEnabled(true);
+    ui->cleanButton->setEnabled(true);
+}
+
+/** \~Italian
+* @brief Setta il tipo inserito dall'utente
+* @param[int] newType: 1 punti inseriti da tastiera e computazione eseguita direttamente sul client, 2 punti inseriti da tastiera
+* e computazione eseguita sul server connesso tramite TCP, 3 dati presi da database Postgres
+*/
+void MainWindow::setType(int newType)
+{
+    type=newType;
+}
+
+/** \~Italian
+* @brief Restituisce il tipo scelto dall'utente
+* @return 1 punti inseriti da tastiera e computazione eseguita direttamente sul client, 2 punti inseriti da tastiera
+* e computazione eseguita sul server connesso tramite TCP oppure 3 dati presi da database Postgres
+*/
+int MainWindow::getType()
+{
+    return type;
+}
+
+

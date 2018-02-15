@@ -5,6 +5,7 @@
 #include <QTcpSocket>
 #include <iostream>
 #include <regex>
+#include <qmessagebox.h>
 
 class Client : public QObject
 {
@@ -23,6 +24,7 @@ class Client : public QObject
     private:
         QTcpSocket *socket; //socket utilizzato per la connessione
         QByteArray data; //array per scambiare messaggi con il server
+        QMessageBox message;
 
 };
 

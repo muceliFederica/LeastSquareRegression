@@ -5,7 +5,7 @@
 #include <plot.h>
 #include <leastsquareregressionlibrary.h>
 #include <iostream>
-#include "client.h"
+#include <client.h>
 namespace Ui {
 class MainWindow;
 }
@@ -18,19 +18,25 @@ class MainWindow : public QMainWindow
         explicit MainWindow(QWidget *parent = 0);
         void drawPlot(const QPair<vector<double>,vector<double>> points);
         ~MainWindow();
+        void setType(int type);
+        int getType();
 
     private slots:
-        void on_pushButton_clicked();
 
         void on_cleanButton_clicked();
 
         void on_computeButton_clicked();
 
-    private:
+        void on_addPointPushButton_clicked();
+
+private:
         Ui::MainWindow *ui;
         Plot *plot;
         Client client;
+        QMessageBox message;
+        int type; //1 tastiera(no server), 2 server, 3 database
         void writeEquation(const vector<float>coeffRegressionLine,const int degree);
+
 };
 
 #endif // MAINWINDOW_H
